@@ -5076,6 +5076,99 @@ body::before {
   }
 }
 
+
+
+/* ===== آخر ضبط: انتقال الصحيح تلقائيًا + رئيسية بدون سكرول زائد + الدعاء أصغر وشفاف ===== */
+.home-prayer {
+  margin: 7px auto 0 !important;
+  max-width: min(620px, 92vw) !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: color-mix(in srgb, var(--muted) 66%, transparent) !important;
+  opacity: .72 !important;
+  font-size: clamp(8px, 1.45vw, 10.5px) !important;
+  font-weight: 400 !important;
+  line-height: 1.35 !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: clip !important;
+}
+.page-surface--home {
+  min-height: calc(100dvh - 86px) !important;
+  display: flex !important;
+  align-items: stretch !important;
+}
+.page-surface--home .hub-wrap--home {
+  min-height: calc(100dvh - 116px) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+  width: 100% !important;
+}
+.page-surface--home .hub-intro--home {
+  margin-bottom: clamp(24px, 4.5vh, 38px) !important;
+}
+.page-surface--home .tests-materials--home {
+  padding-bottom: 0 !important;
+}
+.page-surface--home .subject-grid--home {
+  flex: 0 0 auto !important;
+}
+@media (min-width: 721px) {
+  .page-surface--home .hub-wrap--home {
+    justify-content: center !important;
+    min-height: calc(100dvh - 128px) !important;
+  }
+  .home-contact-note {
+    margin-bottom: 10px !important;
+  }
+}
+@media (max-width: 720px) {
+  .shell:has(.page-surface--home) {
+    min-height: calc(100dvh - 54px - var(--safe-top)) !important;
+    padding-top: 10px !important;
+    padding-bottom: max(10px, env(safe-area-inset-bottom, 0px)) !important;
+    overflow: hidden !important;
+  }
+  .page-surface--home {
+    min-height: calc(100dvh - 74px - var(--safe-top)) !important;
+  }
+  .page-surface--home .hub-wrap--home {
+    min-height: calc(100dvh - 82px - var(--safe-top)) !important;
+    justify-content: flex-start !important;
+  }
+  .page-surface--home .hub-intro--home {
+    margin-bottom: 28px !important;
+  }
+  .home-prayer {
+    max-width: 94vw !important;
+    font-size: clamp(7.2px, 1.95vw, 9px) !important;
+    opacity: .62 !important;
+  }
+  .page-surface--home .subject-grid--home {
+    gap: 12px !important;
+  }
+  .page-surface--home .subject-card--home.subject-card--compact {
+    min-height: 64px !important;
+    padding-top: 13px !important;
+    padding-bottom: 13px !important;
+  }
+  .home-contact-note {
+    margin-top: auto !important;
+    padding-top: 18px !important;
+    padding-bottom: max(12px, env(safe-area-inset-bottom, 0px)) !important;
+  }
+}
+/* لا نمنع سكرول صفحات الاختبار الطويلة، فقط نقلل سكرول الصفحات المختصرة */
+.page-surface:not(.quiz-shell-split) .empty,
+.tests-hub-minimal,
+.subject-hierarchy-stack {
+  overscroll-behavior: contain !important;
+}
+
 </style>
 </head>
 <body class="anim-once">
@@ -12058,6 +12151,7 @@ const __GRAMMAR_AUDIT_EMBED__ = {"grammar-audit-summary-json":{"generated":"2026
   function renderQuiz() {
     clearTimeout(window.__falseExplainAutoTimer);
     clearInterval(window.__falseExplainAutoTicker);
+    clearTimeout(window.__quizCorrectAutoNext);
     const v = $("#view");
     let isMistakeReview = state.session.quizMode === "mistakeReview";
     let isCustomQuiz = state.session.quizMode === "customQuiz" && state.session.activeQuiz === IMC_COMPREHENSIVE_QUIZ_KEY;
@@ -12296,22 +12390,31 @@ const __GRAMMAR_AUDIT_EMBED__ = {"grammar-audit-summary-json":{"generated":"2026
           if (state.session.quizMode === "review") {
             s.reviewProficient = !!s.ok;
           }
-          if (
+          const isCorrectFalseWithExplain =
             s.ok &&
             q.correctIndex === 1 &&
             String(q.options[q.correctIndex] || "").trim() === "خطأ" &&
-            q.false_explanation
-          ) {
-            state.session.falseExplainAutoQid = "";
-            saveState();
-            beep(s.ok);
-            render();
-            return;
-          }
+            q.false_explanation;
           state.session.falseExplainAutoQid = "";
           saveState();
           beep(s.ok);
           render();
+          if (s.ok && !isCorrectFalseWithExplain) {
+            clearTimeout(window.__quizCorrectAutoNext);
+            window.__quizCorrectAutoNext = setTimeout(() => {
+              const latest = ensureQs(q.id);
+              if (!latest.ok || latest.answered === null) return;
+              if (idx >= list.length - 1) {
+                if (countQuizListAnswered(list) >= list.length) {
+                  state.session.activeIdx = list.length;
+                }
+              } else {
+                state.session.activeIdx = clamp(idx + 1, 0, list.length - 1);
+              }
+              saveState();
+              render();
+            }, 520);
+          }
         };
         ox.appendChild(b);
       });
