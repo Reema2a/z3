@@ -5014,6 +5014,68 @@ body {
   margin-top: 2px !important;
 }
 
+
+
+/* ===== Final quick fixes: mobile full background, manual quiz back, readable question font, regular false explanation ===== */
+html, body {
+  background: linear-gradient(180deg, var(--bg) 0%, color-mix(in srgb, var(--bg) 35%, var(--bg2)) 45%, var(--bg2) 100%) !important;
+  background-color: var(--bg2) !important;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: -2px;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(180deg, var(--bg) 0%, color-mix(in srgb, var(--bg) 35%, var(--bg2)) 45%, var(--bg2) 100%) !important;
+}
+.app, .shell {
+  background: transparent !important;
+}
+.quiz-false-success,
+.quiz-false-success * {
+  font-weight: 400 !important;
+}
+.quiz-false-success-title {
+  font-weight: 500 !important;
+}
+.quiz-false-success-text {
+  font-weight: 400 !important;
+}
+@media (max-width: 720px) {
+  html, body, .app {
+    min-height: 100dvh !important;
+    background-color: var(--bg2) !important;
+    overscroll-behavior-y: none !important;
+  }
+  body {
+    background-attachment: scroll !important;
+    background-size: 100% 240vh !important;
+    background-repeat: repeat-y !important;
+  }
+  .shell {
+    min-height: calc(100dvh - 54px - var(--safe-top)) !important;
+  }
+  .quiz-panel--rtl .quiz-learn-main .qtext,
+  .quiz-dynamic-panel .qtext,
+  .study-qtext {
+    font-size: 14.45px !important;
+    line-height: 1.74 !important;
+    font-weight: 400 !important;
+  }
+  .quiz-dynamic-panel {
+    padding-inline: 12px !important;
+  }
+}
+@media (max-width: 390px) {
+  .quiz-panel--rtl .quiz-learn-main .qtext,
+  .quiz-dynamic-panel .qtext,
+  .study-qtext {
+    font-size: 14.05px !important;
+    line-height: 1.7 !important;
+  }
+}
+
 </style>
 </head>
 <body class="anim-once">
@@ -7561,7 +7623,7 @@ const __GRAMMAR_AUDIT_EMBED__ = {"grammar-audit-summary-json":{"generated":"2026
       if (typeof p.session.quizFocusMode !== "boolean") p.session.quizFocusMode = false;
       if (typeof p.session.activeSubjectId !== "string") p.session.activeSubjectId = "";
       if (typeof p.session.activeTestSectionId !== "string") p.session.activeTestSectionId = "";
-      if (p.session.quizMode !== "review") p.session.quizMode = "normal";
+      if (!["normal", "review", "customQuiz", "mistakeReview"].includes(p.session.quizMode)) p.session.quizMode = "normal";
       if (!Array.isArray(p.session.reviewQuizIds)) p.session.reviewQuizIds = [];
       try {
         delete p.session.quizCompactOpts;
@@ -11988,10 +12050,6 @@ const __GRAMMAR_AUDIT_EMBED__ = {"grammar-audit-summary-json":{"generated":"2026
     if (!sid) sid = subjectIdFromQuizKey(state.session.activeQuiz || "");
     const sec = state.session.activeTestSectionId || "";
     if (sid && sec && SUBJECT_TEST_SECTION_IDS.includes(sec)) {
-      const mode = state.session.activeTestMode || "";
-      if (sid === "integrated-marketing-comms" && sec === "aggregations" && mode === "lectures") {
-        return "#/tests/" + encodeURIComponent(sid) + "/" + encodeURIComponent(sec) + "/lectures";
-      }
       return "#/tests/" + encodeURIComponent(sid) + "/" + encodeURIComponent(sec);
     }
     return sid ? "#/tests/" + encodeURIComponent(sid) : "#/";
@@ -12253,14 +12311,6 @@ const __GRAMMAR_AUDIT_EMBED__ = {"grammar-audit-summary-json":{"generated":"2026
           state.session.falseExplainAutoQid = "";
           saveState();
           beep(s.ok);
-          if (s.ok && idx < list.length - 1) {
-            setTimeout(() => {
-              state.session.activeIdx = clamp(idx + 1, 0, list.length - 1);
-              saveState();
-              render();
-            }, 420);
-            return;
-          }
           render();
         };
         ox.appendChild(b);
