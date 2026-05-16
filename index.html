@@ -3984,6 +3984,68 @@ table.gram-pronoun-table td:last-child {
   .toast-wrap { bottom: calc(18px + var(--safe-bottom)) !important; }
 }
 
+
+/* قسم الأسئلة التي إجابتها (خطأ) */
+.false-answer-list {
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  margin-top:16px;
+}
+.false-answer-card {
+  border-radius:var(--r);
+  padding:18px;
+  background:var(--surface2);
+  border:1px solid var(--border);
+  box-shadow:0 12px 34px rgba(0,0,0,.10);
+}
+.false-answer-card.is-mastered {
+  opacity:.58;
+}
+.false-answer-meta {
+  display:inline-flex;
+  width:max-content;
+  max-width:100%;
+  margin-bottom:12px;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:650;
+  color:var(--gold);
+  background:color-mix(in srgb, var(--gold) 10%, transparent);
+  border:1px solid color-mix(in srgb, var(--gold) 24%, var(--border));
+}
+.false-answer-q {
+  margin:0 0 12px;
+  font-size:clamp(15px, 2.2vw, 17px);
+  line-height:1.75;
+  font-weight:500;
+  text-align:right;
+}
+.false-answer-value {
+  margin:0 0 14px;
+  font-size:14px;
+  font-weight:700;
+  color:var(--bad);
+}
+.false-answer-actions {
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  justify-content:flex-start;
+}
+.false-answer-actions .btn {
+  min-height:40px;
+  padding:8px 14px;
+  font-size:13px;
+}
+@media (max-width:720px) {
+  .false-answer-card { padding:14px; }
+  .false-answer-q { font-size:15px; line-height:1.7; }
+  .false-answer-actions { flex-wrap:nowrap; }
+  .false-answer-actions .btn { flex:1 1 0; min-width:0; padding:8px 10px; }
+}
+
 /* Desktop: only reduce quiz/study question and answer typography */
 .quiz-panel--rtl .quiz-learn-main .qtext,
 .study-qtext {
@@ -7478,6 +7540,7 @@ const __GRAMMAR_AUDIT_EMBED__ = {"grammar-audit-summary-json":{"generated":"2026
   let reviewSubjectId = "";
   /** صفحة مذكرة الأسئلة قبل الاختبار من `#/study/<id>` */
   let studySubjectId = "";
+  let falseSubjectId = "";
   let vocabFilter = "";
   /** "allWords" = كل المفردات · "onePhase" = مرحلة واحدة من الشريحة */
   let vocabQuizMode = "allWords";
@@ -8596,6 +8659,7 @@ const __GRAMMAR_AUDIT_EMBED__ = {"grammar-audit-summary-json":{"generated":"2026
     testsSubjectMode = "";
     reviewSubjectId = "";
     studySubjectId = "";
+    falseSubjectId = "";
 
     /** `#/` أو بدون مسار → الشاشة الرئيسية مع التحية (صباح/مساء) */
     if (!parts.length) {
@@ -8638,13 +8702,22 @@ const __GRAMMAR_AUDIT_EMBED__ = {"grammar-audit-summary-json":{"generated":"2026
       return;
     }
 
+
+
+    if (top === "false-answers") {
+      route = "false-answers";
+      if (parts[1]) falseSubjectId = decodeURIComponent(parts[1]);
+      return;
+    }
+
+
     if (top === "review") {
       route = "review";
       if (parts[1]) reviewSubjectId = decodeURIComponent(parts[1]);
       return;
     }
 
-    const ok = ["tests", "quiz", "review", "study"];
+    const ok = ["tests", "quiz", "review", "study", "false-answers"];
     route = ok.includes(top) ? top : "home";
   }
 
@@ -8818,6 +8891,89 @@ const __GRAMMAR_AUDIT_EMBED__ = {"grammar-audit-summary-json":{"generated":"2026
       .map((q) => q.id);
   }
 
+
+  function falseAnswerQuestionsForSubject(subjectId) {
+    return questions.filter((q) => {
+      const answer = String((q.options && q.options[q.correctIndex]) || "").trim();
+      return subjectIdFromQuizKey(q.quiz) === subjectId && answer === "خطأ";
+    });
+  }
+
+  function renderFalseAnswerPage() {
+    const v = $("#view");
+    const sub = subjectById(falseSubjectId);
+    if (!sub || sub.homeOnly || sub.id !== "integrated-marketing-comms") {
+      location.hash = "#/";
+      renderHome();
+      return;
+    }
+    const backToSubject = "#/tests/" + encodeURIComponent(sub.id);
+    const allQs = falseAnswerQuestionsForSubject(sub.id);
+    const pendingQs = allQs.filter((q) => !state.qs[q.id]?.falseAnswerMastered);
+    const masteredCount = allQs.length - pendingQs.length;
+    const weakCount = allQs.filter((q) => state.qs[q.id]?.falseAnswerWeak).length;
+    const rows = pendingQs.length
+      ? `<div class="false-answer-list">${pendingQs
+          .map((q) => {
+            const st = ensureQs(q.id);
+            return `<article class="false-answer-card${st.falseAnswerWeak ? " is-study-weak" : ""}" data-false-qid="${esc(q.id)}">
+              <span class="false-answer-meta">${esc(displayQuizName(q.quiz))}</span>
+              <p class="false-answer-q">${esc(q.question)}</p>
+              <p class="false-answer-value">الإجابة: خطأ</p>
+              <div class="false-answer-actions" aria-label="تقييم الإتقان">
+                <button type="button" class="btn btn-primary false-master-btn">✓ أتقنت</button>
+                <button type="button" class="btn btn-sec false-weak-btn">! ما أتقنت</button>
+              </div>
+            </article>`;
+          })
+          .join("")}</div>`
+      : `<div class="panel"><p class="empty">تم إتقان كل الأسئلة التي إجابتها خطأ.</p></div>`;
+
+    v.innerHTML = `
+      <div class="page-surface">
+        ${subjectPageHeader(backToSubject, "الأسئلة التي إجابتها (خطأ)", `${allQs.length} سؤال · أتقنت ${masteredCount} · ما أتقنت ${weakCount}`)}
+        <div class="study-head-actions">
+          <span class="study-count-pill">المتبقي: <span class="study-count-num">${pendingQs.length}</span> / ${allQs.length}</span>
+          <span class="study-count-pill study-count-pill--weak">ما أتقنت: <span class="study-count-num">${weakCount}</span></span>
+          <button type="button" class="btn btn-sec" id="falseResetAll">إعادة كل الأسئلة</button>
+        </div>
+        ${rows}
+      </div>`;
+
+    v.querySelectorAll("[data-false-qid]").forEach((card) => {
+      const id = card.getAttribute("data-false-qid");
+      const q = questions.find((x) => x.id === id);
+      if (!q) return;
+      card.querySelector(".false-master-btn")?.addEventListener("click", () => {
+        const st = ensureQs(q.id);
+        st.falseAnswerMastered = true;
+        st.falseAnswerWeak = false;
+        saveState();
+        toast("تم إتقان السؤال", "ok");
+        render();
+      });
+      card.querySelector(".false-weak-btn")?.addEventListener("click", () => {
+        const st = ensureQs(q.id);
+        st.falseAnswerMastered = false;
+        st.falseAnswerWeak = true;
+        saveState();
+        toast("تم تحديده كغير متقن", "ok");
+        render();
+      });
+    });
+    $("#falseResetAll")?.addEventListener("click", () => {
+      for (const q of allQs) {
+        const st = ensureQs(q.id);
+        st.falseAnswerMastered = false;
+        st.falseAnswerWeak = false;
+      }
+      saveState();
+      toast("تمت إعادة الأسئلة", "ok");
+      render();
+    });
+    $("[data-back]")?.addEventListener("click", () => (location.hash = backToSubject));
+  }
+
   function renderStudyPage() {
     const v = $("#view");
     const sub = subjectById(studySubjectId);
@@ -8958,6 +9114,15 @@ const __GRAMMAR_AUDIT_EMBED__ = {"grammar-audit-summary-json":{"generated":"2026
         </div>
         <span class="subject-pick-chev" aria-hidden="true">${EM_ICON.chev}</span>
       </a>` : "";
+    const falseAnswerCard = sub.id === "integrated-marketing-comms" ? `
+      <a class="subject-card subject-section-pick-row" href="#/false-answers/${encodeURIComponent(sub.id)}">
+        <div class="subject-card-ic" aria-hidden="true">${EM_ICON.review}</div>
+        <div style="flex:1;min-width:0">
+          <h3>الأسئلة التي إجابتها (خطأ)</h3>
+          <span class="subject-card-meta">مراجعة مركزة لعبارات الصح والخطأ</span>
+        </div>
+        <span class="subject-pick-chev" aria-hidden="true">${EM_ICON.chev}</span>
+      </a>` : "";
     const hierarchy = studyCard + SUBJECT_TEST_SECTION_IDS
       .filter((secId) => ordinalsToShowForSection(sub, secId).length > 0)
       .map((secId) => {
@@ -8973,7 +9138,7 @@ const __GRAMMAR_AUDIT_EMBED__ = {"grammar-audit-summary-json":{"generated":"2026
         <span class="subject-pick-chev" aria-hidden="true">${EM_ICON.chev}</span>
       </a>`;
       })
-      .join("");
+      .join("") + falseAnswerCard;
 
     v.innerHTML = `
       <div class="page-surface">
@@ -12488,6 +12653,7 @@ const __GRAMMAR_AUDIT_EMBED__ = {"grammar-audit-summary-json":{"generated":"2026
     else if (route === "tests") renderTests();
     else if (route === "quiz") renderQuiz();
     else if (route === "study") renderStudyPage();
+    else if (route === "false-answers") renderFalseAnswerPage();
     else if (route === "review") renderReviewPage();
     else renderHome();
     syncMobileTabbar();
