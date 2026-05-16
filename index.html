@@ -12064,7 +12064,7 @@ const __GRAMMAR_AUDIT_EMBED__ = {"grammar-audit-summary-json":{"generated":"2026
         enterCustomReviewQuizSession({
           ids: comprehensiveIds,
           subjectId: reviewSubjectId,
-          reset: false,
+          reset: true,
           skipMastered: false,
         }),
       );
@@ -12080,7 +12080,7 @@ const __GRAMMAR_AUDIT_EMBED__ = {"grammar-audit-summary-json":{"generated":"2026
         enterCustomReviewQuizSession({
           ids: comprehensiveIds,
           subjectId: reviewSubjectId,
-          reset: false,
+          reset: true,
           skipMastered: true,
         }),
       );
@@ -12252,7 +12252,7 @@ const __GRAMMAR_AUDIT_EMBED__ = {"grammar-audit-summary-json":{"generated":"2026
         </div>`
       : "";
     const wrongBlock =
-      isReviewQuiz || (locked && !s.ok)
+      locked && !s.ok
         ? `<div class="quiz-correct-only" id="quizWrongPanel">الإجابة الصحيحة: <span>${esc(correctPick || "—")}</span></div>`
         : "";
 
@@ -12636,3 +12636,19 @@ const __GRAMMAR_AUDIT_EMBED__ = {"grammar-audit-summary-json":{"generated":"2026
 </script>
 </body>
 </html>
+<style>
+/* Reema final tweak: make the small prayer visible but still soft */
+.home-prayer {
+  font-size: clamp(10px, 1.75vw, 12.5px) !important;
+  opacity: .82 !important;
+  color: color-mix(in srgb, var(--muted) 82%, var(--text)) !important;
+  line-height: 1.45 !important;
+}
+@media (max-width: 720px) {
+  .home-prayer {
+    font-size: clamp(9.6px, 2.55vw, 11.2px) !important;
+    opacity: .78 !important;
+    max-width: 96vw !important;
+  }
+}
+</style>
