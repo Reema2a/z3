@@ -4046,6 +4046,16 @@ table.gram-pronoun-table td:last-child {
   .false-answer-actions .btn { flex:1 1 0; min-width:0; padding:8px 10px; }
 }
 
+/* Disable movement/animations in false-answer mastery section */
+.false-answer-list,
+.false-answer-list *,
+.false-answer-card,
+.false-answer-actions .btn {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+
 /* Desktop: only reduce quiz/study question and answer typography */
 .quiz-panel--rtl .quiz-learn-main .qtext,
 .study-qtext {
@@ -8932,33 +8942,53 @@ const __GRAMMAR_AUDIT_EMBED__ = {"grammar-audit-summary-json":{"generated":"2026
     v.innerHTML = `
       <div class="page-surface">
         ${subjectPageHeader(backToSubject, "الأسئلة التي إجابتها (خطأ)", `${allQs.length} سؤال · أتقنت ${masteredCount} · ما أتقنت ${weakCount}`)}
-        <div class="study-head-actions">
-          <span class="study-count-pill">المتبقي: <span class="study-count-num">${pendingQs.length}</span> / ${allQs.length}</span>
-          <span class="study-count-pill study-count-pill--weak">ما أتقنت: <span class="study-count-num">${weakCount}</span></span>
+        <div class="study-head-actions" id="falseAnswerCounters" data-total="${allQs.length}">
+          <span class="study-count-pill">المتبقي: <span class="study-count-num" id="falsePendingCount">${pendingQs.length}</span> / ${allQs.length}</span>
+          <span class="study-count-pill study-count-pill--weak">ما أتقنت: <span class="study-count-num" id="falseWeakCount">${weakCount}</span></span>
           <button type="button" class="btn btn-sec" id="falseResetAll">إعادة كل الأسئلة</button>
         </div>
         ${rows}
       </div>`;
 
+    const refreshFalseAnswerCounters = () => {
+      const currentAll = falseAnswerQuestionsForSubject(sub.id);
+      const currentPending = currentAll.filter((x) => !state.qs[x.id]?.falseAnswerMastered).length;
+      const currentWeak = currentAll.filter((x) => state.qs[x.id]?.falseAnswerWeak).length;
+      const pendingEl = $("#falsePendingCount");
+      const weakEl = $("#falseWeakCount");
+      if (pendingEl) pendingEl.textContent = String(currentPending);
+      if (weakEl) weakEl.textContent = String(currentWeak);
+      const list = v.querySelector(".false-answer-list");
+      if (list && !list.querySelector("[data-false-qid]")) {
+        list.outerHTML = `<div class="panel"><p class="empty">تم إتقان كل الأسئلة التي إجابتها خطأ.</p></div>`;
+      }
+    };
+
     v.querySelectorAll("[data-false-qid]").forEach((card) => {
       const id = card.getAttribute("data-false-qid");
       const q = questions.find((x) => x.id === id);
       if (!q) return;
-      card.querySelector(".false-master-btn")?.addEventListener("click", () => {
+      card.querySelector(".false-master-btn")?.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         const st = ensureQs(q.id);
         st.falseAnswerMastered = true;
         st.falseAnswerWeak = false;
         saveState();
+        card.remove();
+        refreshFalseAnswerCounters();
         toast("تم إتقان السؤال", "ok");
-        render();
       });
-      card.querySelector(".false-weak-btn")?.addEventListener("click", () => {
+      card.querySelector(".false-weak-btn")?.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         const st = ensureQs(q.id);
         st.falseAnswerMastered = false;
         st.falseAnswerWeak = true;
         saveState();
+        card.classList.add("is-study-weak");
+        refreshFalseAnswerCounters();
         toast("تم تحديده كغير متقن", "ok");
-        render();
       });
     });
     $("#falseResetAll")?.addEventListener("click", () => {
@@ -12664,7 +12694,7 @@ const __GRAMMAR_AUDIT_EMBED__ = {"grammar-audit-summary-json":{"generated":"2026
     } catch (_) {}
 
     requestAnimationFrame(() => {
-      if (route !== "quiz") {
+      if (route !== "quiz" && route !== "false-answers") {
         window.scrollTo({ top: 0, left: 0, behavior: "auto" });
       }
     });
