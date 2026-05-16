@@ -5943,6 +5943,287 @@ figure.ce-model-figure[data-ce-model-image="1"] img,
   animation: none !important;
 }
 
+
+
+/* ===== moved trailing styles into main style for mobile compatibility ===== */
+
+/* Reema final tweak: make the small prayer visible but still soft */
+.home-prayer {
+  font-size: clamp(10px, 1.75vw, 12.5px) !important;
+  opacity: .82 !important;
+  color: color-mix(in srgb, var(--muted) 82%, var(--text)) !important;
+  line-height: 1.45 !important;
+}
+@media (max-width: 720px) {
+  .home-prayer {
+    font-size: clamp(9.6px, 2.55vw, 11.2px) !important;
+    opacity: .78 !important;
+    max-width: 96vw !important;
+  }
+}
+
+
+/* ===== تعديل تجربة العميل: صورة نموذج المنافسين أصغر، السؤال فوق الصورة، ومنع الحركة عند الاختيار ===== */
+.ce-model-figure {
+  max-width: min(340px, 68%) !important;
+  margin: 10px auto 14px !important;
+  padding: 5px !important;
+  border-radius: 14px !important;
+  box-shadow: none !important;
+}
+.ce-model-figure img {
+  max-height: min(30vh, 260px) !important;
+  border-radius: 9px !important;
+}
+.ce-model-figure figcaption {
+  font-size: 10px !important;
+  margin-top: 4px !important;
+}
+.study-card .ce-model-figure,
+.qrow .ce-model-figure,
+.false-answer-card .ce-model-figure {
+  max-width: min(300px, 66%) !important;
+  margin-top: 8px !important;
+  margin-bottom: 12px !important;
+}
+.quiz-learn-main .qtext + .ce-model-figure {
+  margin-top: -2px !important;
+}
+html, body {
+  scroll-behavior: auto !important;
+}
+.quiz-shell-split, .quiz-shell-split *,
+.quiz-panel, .quiz-panel *,
+.study-list, .study-list *,
+.review-session-actions, .review-session-actions *,
+.rev-bank-list, .rev-bank-list *,
+.false-answer-list, .false-answer-list * {
+  animation: none !important;
+  transition: none !important;
+}
+.opt, .btn, .pill, .qrow, .qcard, .subject-card, .study-card, .false-answer-card {
+  animation: none !important;
+  transition: none !important;
+}
+.quiz-dynamic-panel, .quiz-fixed-panel, .quiz-action-panel, .study-card {
+  overflow-anchor: none !important;
+}
+@media (max-width: 720px) {
+  .ce-model-figure {
+    max-width: min(185px, 46vw) !important;
+    padding: 4px !important;
+    margin: 8px auto 12px !important;
+    border-radius: 12px !important;
+  }
+  .ce-model-figure img {
+    max-height: 18vh !important;
+    border-radius: 8px !important;
+  }
+  .ce-model-figure figcaption {
+    font-size: 9px !important;
+    margin-top: 3px !important;
+  }
+  .study-card .ce-model-figure,
+  .qrow .ce-model-figure,
+  .false-answer-card .ce-model-figure {
+    max-width: min(170px, 44vw) !important;
+  }
+  .ce-image-modal-card {
+    width: min(96vw, 760px) !important;
+  }
+}
+
+/* ضبط نهائي لواجهة الرئيسية والصورة */
+.ce-model-figure figcaption { display:none !important; }
+.subject-card--home { align-items:center !important; }
+.subject-card-home-copy { flex:1 1 auto !important; min-width:0 !important; display:block !important; }
+.subject-status-note { margin-inline-start:auto !important; align-self:center !important; }
+
+/* ===== إصلاح آمن: إجبار صور نموذج تحليل المنافسين على الظهور في كل الأجهزة ===== */
+.ce-model-figure,
+figure.ce-model-figure[data-ce-model-image="1"],
+.quiz-dynamic-panel .ce-model-figure,
+.study-card .ce-model-figure,
+.qrow .ce-model-figure,
+.false-answer-card .ce-model-figure {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: relative !important;
+  width: min(380px, 74%) !important;
+  max-width: min(380px, 74%) !important;
+  min-width: 220px !important;
+  height: auto !important;
+  max-height: none !important;
+  margin: 12px auto 16px !important;
+  padding: 5px !important;
+  border-radius: 14px !important;
+  background: color-mix(in srgb, var(--surface2) 96%, transparent) !important;
+  border: 1px solid var(--border) !important;
+  overflow: visible !important;
+  cursor: zoom-in !important;
+  z-index: 1 !important;
+}
+.ce-model-figure img,
+figure.ce-model-figure[data-ce-model-image="1"] img,
+.quiz-dynamic-panel .ce-model-figure img,
+.study-card .ce-model-figure img {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
+  object-fit: contain !important;
+  border-radius: 9px !important;
+}
+.ce-model-figure figcaption { display: none !important; }
+@media (max-width: 720px) {
+  .ce-model-figure,
+  figure.ce-model-figure[data-ce-model-image="1"],
+  .quiz-dynamic-panel .ce-model-figure,
+  .study-card .ce-model-figure,
+  .qrow .ce-model-figure,
+  .false-answer-card .ce-model-figure {
+    width: min(390px, 94vw) !important;
+    max-width: min(390px, 94vw) !important;
+    min-width: 0 !important;
+    margin: 12px auto 16px !important;
+  }
+  .quiz-dynamic-panel {
+    overflow: visible !important;
+    height: auto !important;
+    max-height: none !important;
+  }
+}
+/* Canvas celebration: reliable on mobile browsers */
+.imc-canvas-celebration {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  z-index: 2147483647 !important;
+  overflow: hidden !important;
+  pointer-events: all !important;
+  background: rgba(2, 6, 23, 0.12) !important;
+  backdrop-filter: blur(1.5px) !important;
+  -webkit-backdrop-filter: blur(1.5px) !important;
+}
+.imc-canvas-celebration canvas {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+}
+.imc-canvas-celebration .imc-celebration-title {
+  position: absolute !important;
+  left: 50% !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 2 !important;
+  animation: none !important;
+}
+
+
+
+/* ===== Force IMC completion celebration on all devices ===== */
+.imc-force-confetti-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  z-index: 2147483647 !important;
+  pointer-events: all !important;
+  overflow: hidden !important;
+  background: rgba(2, 6, 23, 0.10) !important;
+  backdrop-filter: blur(1px) !important;
+  -webkit-backdrop-filter: blur(1px) !important;
+}
+.imc-force-confetti-title {
+  position: absolute !important;
+  left: 50% !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%) scale(.96);
+  z-index: 3 !important;
+  padding: 18px 24px !important;
+  border-radius: 22px !important;
+  border: 1px solid color-mix(in srgb, var(--gold) 42%, var(--border)) !important;
+  background: color-mix(in srgb, var(--surface2) 94%, transparent) !important;
+  box-shadow: var(--shadow) !important;
+  color: var(--text) !important;
+  font-size: clamp(22px, 5vw, 38px) !important;
+  font-weight: 950 !important;
+  text-align: center !important;
+  line-height: 1.4 !important;
+  opacity: 0;
+}
+.imc-force-confetti-piece {
+  position: absolute !important;
+  left: 50% !important;
+  top: 50% !important;
+  z-index: 2 !important;
+  will-change: transform, opacity !important;
+  opacity: 0;
+}
+
+
+/* ===== إصلاح خفيف ومحدد: إظهار صورة أسئلة نموذج تحليل المنافسين في الجوال ===== */
+.ce-model-figure,
+figure.ce-model-figure[data-ce-model-image="1"],
+.ce-model-figure.ce-model-forced-visible {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  float: none !important;
+  clear: both !important;
+  width: min(360px, 74%) !important;
+  max-width: min(360px, 74%) !important;
+  min-width: 210px !important;
+  height: auto !important;
+  margin: 12px auto 16px !important;
+  padding: 5px !important;
+  box-sizing: border-box !important;
+  border-radius: 14px !important;
+  background: color-mix(in srgb, var(--surface2) 96%, transparent) !important;
+  border: 1px solid var(--border) !important;
+  overflow: visible !important;
+  cursor: zoom-in !important;
+  z-index: 5 !important;
+}
+.ce-model-figure img,
+figure.ce-model-figure[data-ce-model-image="1"] img,
+.ce-model-figure.ce-model-forced-visible img {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
+  object-fit: contain !important;
+  margin: 0 auto !important;
+  border-radius: 9px !important;
+}
+.ce-model-figure figcaption { display: none !important; }
+@media (max-width: 720px) {
+  .ce-model-figure,
+  figure.ce-model-figure[data-ce-model-image="1"],
+  .ce-model-figure.ce-model-forced-visible {
+    display: block !important;
+    width: min(360px, 92vw) !important;
+    max-width: min(360px, 92vw) !important;
+    min-width: 0 !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    margin-inline: auto !important;
+    text-align: center !important;
+  }
+}
+
 </style>
 </head>
 <body class="anim-once">
@@ -6071,6 +6352,7 @@ const __GRAMMAR_AUDIT_EMBED__ = {"grammar-audit-summary-json":{"generated":"2026
   function renderPreserveScroll() {
     preserveScrollOnce = { x: window.scrollX || 0, y: window.scrollY || 0 };
     render();
+    setTimeout(ensureCeModelImagesVisible, 30);
   }
 
 
@@ -9685,158 +9967,150 @@ const __GRAMMAR_AUDIT_EMBED__ = {"grammar-audit-summary-json":{"generated":"2026
   }
 
 
+
   let imcCelebrationTimer = null;
   function showImcCompletionCelebration(nextHash) {
     if (imcCelebrationTimer) {
       clearTimeout(imcCelebrationTimer);
       imcCelebrationTimer = null;
     }
-    document.querySelectorAll(".imc-celebration-overlay,.imc-canvas-celebration").forEach((el) => el.remove());
 
+    document.querySelectorAll(".imc-celebration-overlay,.imc-canvas-celebration,.imc-force-confetti-overlay").forEach((el) => el.remove());
+
+    const targetHash = nextHash || "#/tests/integrated-marketing-comms";
     const overlay = document.createElement("div");
-    overlay.className = "imc-canvas-celebration";
+    overlay.className = "imc-force-confetti-overlay";
     overlay.setAttribute("role", "status");
     overlay.setAttribute("aria-live", "polite");
-    overlay.innerHTML = `<canvas aria-hidden="true"></canvas><div class="imc-celebration-title">تم بحمد الله</div>`;
+    overlay.style.cssText = "position:fixed!important;inset:0!important;width:100vw!important;height:100vh!important;height:100dvh!important;z-index:2147483647!important;pointer-events:all!important;overflow:hidden!important;background:rgba(2,6,23,.10)!important;";
+
+    const title = document.createElement("div");
+    title.className = "imc-force-confetti-title";
+    title.textContent = "تم بحمد الله";
+    title.style.cssText = "position:absolute!important;left:50%!important;top:50%!important;transform:translate(-50%,-50%) scale(.96);z-index:3!important;padding:18px 24px!important;border-radius:22px!important;background:rgba(15,23,42,.88)!important;color:#fff!important;font-size:clamp(22px,5vw,38px)!important;font-weight:950!important;text-align:center!important;line-height:1.4!important;opacity:0;box-shadow:0 20px 70px rgba(0,0,0,.35)!important;";
+    overlay.appendChild(title);
     document.body.appendChild(overlay);
 
-    const canvas = overlay.querySelector("canvas");
-    const ctx = canvas && canvas.getContext ? canvas.getContext("2d") : null;
-    if (!ctx) {
-      imcCelebrationTimer = setTimeout(() => {
-        overlay.remove();
-        imcCelebrationTimer = null;
-        location.hash = nextHash || "#/tests/integrated-marketing-comms";
-      }, 900);
-      return;
-    }
-
-    const title = overlay.querySelector(".imc-celebration-title");
+    const W = Math.max(window.innerWidth || document.documentElement.clientWidth || 390, 320);
+    const H = Math.max(window.innerHeight || document.documentElement.clientHeight || 720, 520);
+    const isMobile = W <= 720;
+    const count = isMobile ? 220 : 300;
     const colors = ["#d4af37", "#e8c547", "#22c55e", "#f8fafc", "#f59e0b", "#38bdf8", "#fb7185", "#a7f3d0", "#ffffff"];
-    let W = 0, H = 0, DPR = 1, cx = 0, cy = 0;
-    const isMobile = Math.min(window.innerWidth || 390, (window.screen && window.screen.width) || 390) <= 720;
-    const count = isMobile ? 260 : 320;
+    const heartScale = isMobile ? Math.min(W / 40, 9.6) : 11.4;
     const pieces = [];
-    const startTime = performance.now();
-
-    function resizeCanvas() {
-      DPR = Math.min(window.devicePixelRatio || 1, 2);
-      W = Math.max(window.innerWidth || document.documentElement.clientWidth || 390, 320);
-      H = Math.max(window.innerHeight || document.documentElement.clientHeight || 720, 520);
-      canvas.width = Math.floor(W * DPR);
-      canvas.height = Math.floor(H * DPR);
-      canvas.style.width = W + "px";
-      canvas.style.height = H + "px";
-      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-      cx = W / 2;
-      cy = H / 2;
-    }
-    resizeCanvas();
 
     function heartPoint(t, scale) {
       return {
         x: 16 * Math.pow(Math.sin(t), 3) * scale,
-        y: -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t)) * scale,
+        y: -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t)) * scale
       };
     }
-    function edgeStart(i) {
+    function startFromEdge(i) {
       const edge = i % 4;
-      if (edge === 0) return { x: -90 - Math.random() * W * .35, y: Math.random() * H };
-      if (edge === 1) return { x: W + 90 + Math.random() * W * .35, y: Math.random() * H };
-      if (edge === 2) return { x: Math.random() * W, y: -90 - Math.random() * H * .25 };
-      return { x: Math.random() * W, y: H + 90 + Math.random() * H * .25 };
+      if (edge === 0) return { x: -W * (.62 + Math.random() * .30), y: (Math.random() - .5) * H * 1.10 };
+      if (edge === 1) return { x: W * (.62 + Math.random() * .30), y: (Math.random() - .5) * H * 1.10 };
+      if (edge === 2) return { x: (Math.random() - .5) * W * 1.10, y: -H * (.58 + Math.random() * .24) };
+      return { x: (Math.random() - .5) * W * 1.10, y: H * (.58 + Math.random() * .24) };
     }
-    function lerp(a, b, p) { return a + (b - a) * p; }
-    function ease(p) { return 1 - Math.pow(1 - Math.max(0, Math.min(1, p)), 3); }
+    function setTransform(el, x, y, rot, scale, opacity, duration, easing) {
+      el.style.transition = "transform " + duration + "ms " + (easing || "cubic-bezier(.16,.92,.18,1)") + ", opacity " + duration + "ms ease";
+      el.style.opacity = String(opacity);
+      el.style.transform = "translate3d(" + x + "px," + y + "px,0) rotate(" + rot + "deg) scale(" + scale + ")";
+    }
 
     for (let i = 0; i < count; i++) {
-      const start = edgeStart(i);
-      const hp = heartPoint((Math.PI * 2 * i) / count, isMobile ? Math.min(W / 39, 9.7) : 11.4);
+      const piece = document.createElement("i");
+      piece.className = "imc-force-confetti-piece";
+      const color = colors[i % colors.length];
+      const w = (isMobile ? 6 : 7) + Math.random() * 5;
+      const h = (isMobile ? 9 : 11) + Math.random() * 10;
+      piece.style.cssText = "position:absolute!important;left:50%!important;top:50%!important;z-index:2!important;width:" + w + "px!important;height:" + h + "px!important;background:" + color + "!important;border-radius:" + (Math.random() > .5 ? "999px" : "3px") + "!important;opacity:0;will-change:transform,opacity!important;box-shadow:0 0 10px rgba(255,255,255,.12);";
+      const hp = heartPoint((Math.PI * 2 * i) / count, heartScale);
+      const start = startFromEdge(i);
       const angle = Math.random() * Math.PI * 2;
-      const push = (isMobile ? 135 : 170) + Math.random() * (isMobile ? 190 : 230);
-      pieces.push({
+      const push = (isMobile ? 135 : 175) + Math.random() * (isMobile ? 190 : 240);
+      const data = {
+        el: piece,
         sx: start.x, sy: start.y,
-        hx: cx + hp.x + (Math.random() - .5) * 7,
-        hy: cy + hp.y + (Math.random() - .5) * 7,
-        bx: cx + Math.cos(angle) * push,
-        by: cy + Math.sin(angle) * push,
-        fx: Math.random() * W,
-        fy: Math.random() * H,
-        ex: cx + (Math.random() - .5) * W * 1.45,
-        ey: -90 - Math.random() * H * .55,
-        w: (isMobile ? 6 : 7) + Math.random() * 5,
-        h: (isMobile ? 9 : 11) + Math.random() * 10,
-        color: colors[i % colors.length],
-        rot: Math.random() * Math.PI * 2,
-        speed: .02 + Math.random() * .04,
-        delay: Math.random() * 230,
-        round: Math.random() > .5,
+        hx: hp.x + (Math.random() - .5) * 7,
+        hy: hp.y + (Math.random() - .5) * 7,
+        bx: Math.cos(angle) * push,
+        by: Math.sin(angle) * push,
+        fx: (Math.random() - .5) * W * .94,
+        fy: (Math.random() - .5) * H * .82,
+        ex: (Math.random() - .5) * W * 1.45,
+        ey: -H * (.58 + Math.random() * .55),
+        r: Math.random() * 360,
+        delay: Math.random() * 210
+      };
+      setTransform(piece, data.sx, data.sy, data.r, .65, 0, 0);
+      overlay.appendChild(piece);
+      pieces.push(data);
+    }
+
+    requestAnimationFrame(() => {
+      title.style.transition = "transform 500ms ease, opacity 500ms ease";
+      title.style.opacity = "1";
+      title.style.transform = "translate(-50%,-50%) scale(1)";
+      pieces.forEach((p) => {
+        setTimeout(() => setTransform(p.el, p.hx, p.hy, p.r + 420, 1, 1, 1450), p.delay);
       });
-    }
+    });
 
-    function drawPiece(p, x, y, r, alpha, scale) {
-      ctx.save();
-      ctx.globalAlpha = alpha;
-      ctx.translate(x, y);
-      ctx.rotate(r);
-      ctx.fillStyle = p.color;
-      const ww = p.w * scale;
-      const hh = p.h * scale;
-      if (p.round) {
-        ctx.beginPath();
-        ctx.ellipse(0, 0, ww / 2, hh / 2, 0, 0, Math.PI * 2);
-        ctx.fill();
-      } else {
-        ctx.fillRect(-ww / 2, -hh / 2, ww, hh);
-      }
-      ctx.restore();
-    }
+    setTimeout(() => {
+      title.style.transform = "translate(-50%,-50%) scale(1.04)";
+      pieces.forEach((p) => setTransform(p.el, p.bx, p.by, p.r + 850, 1.35, 1, 720));
+    }, 2500);
 
-    function frame(now) {
-      const t = now - startTime;
-      ctx.clearRect(0, 0, W, H);
-      if (title) title.style.opacity = String(t < 400 ? t / 400 : t > 4700 ? Math.max(0, 1 - (t - 4700) / 800) : 1);
-      for (const p of pieces) {
-        const tt = Math.max(0, t - p.delay);
-        let x, y, alpha = 1, scale = 1, rot = p.rot + tt * p.speed;
-        if (tt < 1500) {
-          const e = ease(tt / 1500);
-          x = lerp(p.sx, p.hx, e);
-          y = lerp(p.sy, p.hy, e);
-          alpha = Math.min(1, tt / 280);
-          scale = .7 + .3 * e;
-        } else if (tt < 2550) {
-          x = p.hx;
-          y = p.hy;
-        } else if (tt < 3350) {
-          const e = ease((tt - 2550) / 800);
-          x = lerp(p.hx, p.bx, e);
-          y = lerp(p.hy, p.by, e);
-          scale = 1 + .4 * e;
-        } else if (tt < 4200) {
-          const e = ease((tt - 3350) / 850);
-          x = lerp(p.bx, p.fx, e);
-          y = lerp(p.by, p.fy, e);
-          scale = 1.1 - .1 * e;
-        } else {
-          const e = ease((tt - 4200) / 1050);
-          x = lerp(p.fx, p.ex, e);
-          y = lerp(p.fy, p.ey, e);
-          alpha = Math.max(0, 1 - e);
-          scale = .95 - .35 * e;
-        }
-        drawPiece(p, x, y, rot, alpha, scale);
-      }
-      if (t < 5600) requestAnimationFrame(frame);
-    }
-    requestAnimationFrame(frame);
+    setTimeout(() => {
+      pieces.forEach((p) => setTransform(p.el, p.fx, p.fy, p.r + 1200, .95, .98, 780));
+    }, 3250);
+
+    setTimeout(() => {
+      title.style.opacity = ".92";
+      pieces.forEach((p) => setTransform(p.el, p.ex, p.ey, p.r + 1650, .55, 0, 1000));
+    }, 4300);
 
     imcCelebrationTimer = setTimeout(() => {
       overlay.remove();
       imcCelebrationTimer = null;
-      location.hash = nextHash || "#/tests/integrated-marketing-comms";
+      location.hash = targetHash;
     }, 5700);
   }
+
+  function bindImcCompletionCelebrationTriggers(root) {
+    const scope = root || document;
+    scope.querySelectorAll('[data-home-subject="integrated-marketing-comms"]').forEach((card) => {
+      if (card.dataset.imcCelebrationBound === "1") return;
+      card.dataset.imcCelebrationBound = "1";
+      const run = (ev) => {
+        if (ev) {
+          ev.preventDefault();
+          ev.stopPropagation();
+        }
+        showImcCompletionCelebration("#/tests/integrated-marketing-comms");
+        return false;
+      };
+      card.addEventListener("click", run, { passive: false });
+      card.addEventListener("touchend", run, { passive: false });
+    });
+  }
+
+  document.addEventListener("click", function(ev) {
+    const card = ev.target && ev.target.closest && ev.target.closest('[data-home-subject="integrated-marketing-comms"]');
+    if (!card) return;
+    ev.preventDefault();
+    ev.stopPropagation();
+    showImcCompletionCelebration("#/tests/integrated-marketing-comms");
+  }, true);
+
+  document.addEventListener("touchend", function(ev) {
+    const card = ev.target && ev.target.closest && ev.target.closest('[data-home-subject="integrated-marketing-comms"]');
+    if (!card) return;
+    ev.preventDefault();
+    ev.stopPropagation();
+    showImcCompletionCelebration("#/tests/integrated-marketing-comms");
+  }, { capture: true, passive: false });
 
 
   /** الصفحة الرئيسية الوحيدة — اللوجو و #/ وكل مسار «الرئيسية» يستدعيها بنفس الهيكل والأنيميشن */
@@ -9873,13 +10147,8 @@ const __GRAMMAR_AUDIT_EMBED__ = {"grammar-audit-summary-json":{"generated":"2026
           <p class="home-contact-note"><span class="home-contact-main">تَمّ تصميم هذا الموقع بكل حُّب لعيون قروب شعبة Z3..</span><span class="home-contact-main">ممتنة جداً لرحلتنا معاً، وسائلة الله أن يُقرّ أعيننا بالوصول لأهدافنا والاحتفال بنجاحنا.</span><span class="home-contact-dua">إذا واجهتكم أي ملاحظات، يسعدني أن تشاركوني إياها في القروب..</span><span class="home-contact-dua">ولا تحرمونا من صالح دعواتكم لي، ولكل من كان له الفضل في تجميع الأسئلة وتدقيقها وتوضيح أسباب الخطأ وغيرها.</span><span class="home-contact-name">Reema</span><span class="home-contact-heart" aria-hidden="true">🤍</span></p>
         </div>
       </div>`;
-    const imcHomeCard = v.querySelector('[data-home-subject="integrated-marketing-comms"]');
-    if (imcHomeCard) {
-      imcHomeCard.addEventListener("click", (e) => {
-        e.preventDefault();
-        showImcCompletionCelebration("#/tests/integrated-marketing-comms");
-      });
-    }
+    bindImcCompletionCelebrationTriggers(v);
+    bindImcCompletionCelebrationTriggers(v);
   }
 
   function subjectWireMiniRev(v, sub) {
@@ -13858,6 +14127,59 @@ const __GRAMMAR_AUDIT_EMBED__ = {"grammar-audit-summary-json":{"generated":"2026
     );
   }
 
+
+  function ensureCeModelImagesVisible() {
+    try {
+      const src = CE_COMPETITOR_MODEL_SRC;
+      const phrases = [
+        "أي المزايا التي تقدمها المنشأة ومن الممكن إيقافها واستغلال مواردها لتطوير تجربة العميل",
+        "أين تقع الحاجات والرغبات التي لم يتم إشباعها لا من قبل المنشأة ولا من قبل منافسيها",
+        "أين تقع الميزة التنافسية للمنشأة"
+      ];
+
+      function isModelText(txt) {
+        txt = String(txt || "");
+        return txt.includes("حسب نموذج تحليل المنافسين") && phrases.some((p) => txt.includes(p));
+      }
+
+      function forceFigureStyle(fig) {
+        if (!fig) return;
+        fig.classList.add("ce-model-forced-visible");
+        fig.setAttribute("data-ce-model-image", "1");
+        fig.style.cssText += ";display:block!important;visibility:visible!important;opacity:1!important;float:none!important;clear:both!important;width:min(360px,92vw)!important;max-width:min(360px,92vw)!important;margin:12px auto 16px!important;text-align:center!important;";
+        const img = fig.querySelector("img");
+        if (img) {
+          img.src = src;
+          img.removeAttribute("loading");
+          img.style.cssText += ";display:block!important;visibility:visible!important;opacity:1!important;width:100%!important;max-width:100%!important;height:auto!important;max-height:none!important;margin:0 auto!important;object-fit:contain!important;";
+        }
+      }
+
+      document.querySelectorAll(".ce-model-figure").forEach(forceFigureStyle);
+
+      const textNodes = document.querySelectorAll(".qtext, .study-qtext, .false-answer-q, .qrow .t");
+      textNodes.forEach((node) => {
+        if (!isModelText(node.textContent)) return;
+        const holder = node.closest(".quiz-learn-main, .study-card-top, .false-answer-card, .qrow") || node.parentElement;
+        if (!holder) return;
+        let existing = holder.querySelector(".ce-model-figure");
+        if (!existing) {
+          existing = document.createElement("figure");
+          existing.className = "ce-model-figure ce-model-forced-visible";
+          existing.setAttribute("data-ce-model-image", "1");
+          existing.setAttribute("role", "button");
+          existing.setAttribute("tabindex", "0");
+          existing.setAttribute("aria-label", "تكبير الصورة");
+          existing.innerHTML = '<img alt="صورة نموذج تحليل المنافسين">';
+          node.insertAdjacentElement("afterend", existing);
+        }
+        forceFigureStyle(existing);
+      });
+    } catch (e) {
+      console.warn("CE image visibility repair skipped", e);
+    }
+  }
+
   function render() {
     closeTopbarMenu();
     parseRoute();
@@ -13878,6 +14200,7 @@ const __GRAMMAR_AUDIT_EMBED__ = {"grammar-audit-summary-json":{"generated":"2026
     else if (route === "false-answers") renderFalseAnswerPage();
     else if (route === "review") renderReviewPage();
     else renderHome();
+    setTimeout(ensureCeModelImagesVisible, 0);
     syncMobileTabbar();
     bindTopbarScroll();
     // لا نعيد تشغيل أنيميشن الدخول بعد أي ضغط/إعادة رسم
@@ -14022,6 +14345,10 @@ const __GRAMMAR_AUDIT_EMBED__ = {"grammar-audit-summary-json":{"generated":"2026
       render();
     });
     window.addEventListener("hashchange", render);
+    const ceViewNode = document.getElementById("view");
+    if (ceViewNode && window.MutationObserver) {
+      new MutationObserver(ensureCeModelImagesVisible).observe(ceViewNode, { childList: true, subtree: true });
+    }
     document.addEventListener("click", (e) => {
       const fig = e.target.closest?.(".ce-model-figure");
       if (fig) {
@@ -14147,185 +14474,3 @@ const __GRAMMAR_AUDIT_EMBED__ = {"grammar-audit-summary-json":{"generated":"2026
 </script>
 </body>
 </html>
-<style>
-/* Reema final tweak: make the small prayer visible but still soft */
-.home-prayer {
-  font-size: clamp(10px, 1.75vw, 12.5px) !important;
-  opacity: .82 !important;
-  color: color-mix(in srgb, var(--muted) 82%, var(--text)) !important;
-  line-height: 1.45 !important;
-}
-@media (max-width: 720px) {
-  .home-prayer {
-    font-size: clamp(9.6px, 2.55vw, 11.2px) !important;
-    opacity: .78 !important;
-    max-width: 96vw !important;
-  }
-}
-
-
-/* ===== تعديل تجربة العميل: صورة نموذج المنافسين أصغر، السؤال فوق الصورة، ومنع الحركة عند الاختيار ===== */
-.ce-model-figure {
-  max-width: min(340px, 68%) !important;
-  margin: 10px auto 14px !important;
-  padding: 5px !important;
-  border-radius: 14px !important;
-  box-shadow: none !important;
-}
-.ce-model-figure img {
-  max-height: min(30vh, 260px) !important;
-  border-radius: 9px !important;
-}
-.ce-model-figure figcaption {
-  font-size: 10px !important;
-  margin-top: 4px !important;
-}
-.study-card .ce-model-figure,
-.qrow .ce-model-figure,
-.false-answer-card .ce-model-figure {
-  max-width: min(300px, 66%) !important;
-  margin-top: 8px !important;
-  margin-bottom: 12px !important;
-}
-.quiz-learn-main .qtext + .ce-model-figure {
-  margin-top: -2px !important;
-}
-html, body {
-  scroll-behavior: auto !important;
-}
-.quiz-shell-split, .quiz-shell-split *,
-.quiz-panel, .quiz-panel *,
-.study-list, .study-list *,
-.review-session-actions, .review-session-actions *,
-.rev-bank-list, .rev-bank-list *,
-.false-answer-list, .false-answer-list * {
-  animation: none !important;
-  transition: none !important;
-}
-.opt, .btn, .pill, .qrow, .qcard, .subject-card, .study-card, .false-answer-card {
-  animation: none !important;
-  transition: none !important;
-}
-.quiz-dynamic-panel, .quiz-fixed-panel, .quiz-action-panel, .study-card {
-  overflow-anchor: none !important;
-}
-@media (max-width: 720px) {
-  .ce-model-figure {
-    max-width: min(185px, 46vw) !important;
-    padding: 4px !important;
-    margin: 8px auto 12px !important;
-    border-radius: 12px !important;
-  }
-  .ce-model-figure img {
-    max-height: 18vh !important;
-    border-radius: 8px !important;
-  }
-  .ce-model-figure figcaption {
-    font-size: 9px !important;
-    margin-top: 3px !important;
-  }
-  .study-card .ce-model-figure,
-  .qrow .ce-model-figure,
-  .false-answer-card .ce-model-figure {
-    max-width: min(170px, 44vw) !important;
-  }
-  .ce-image-modal-card {
-    width: min(96vw, 760px) !important;
-  }
-}
-
-/* ضبط نهائي لواجهة الرئيسية والصورة */
-.ce-model-figure figcaption { display:none !important; }
-.subject-card--home { align-items:center !important; }
-.subject-card-home-copy { flex:1 1 auto !important; min-width:0 !important; display:block !important; }
-.subject-status-note { margin-inline-start:auto !important; align-self:center !important; }
-
-/* ===== إصلاح آمن: إجبار صور نموذج تحليل المنافسين على الظهور في كل الأجهزة ===== */
-.ce-model-figure,
-figure.ce-model-figure[data-ce-model-image="1"],
-.quiz-dynamic-panel .ce-model-figure,
-.study-card .ce-model-figure,
-.qrow .ce-model-figure,
-.false-answer-card .ce-model-figure {
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  position: relative !important;
-  width: min(380px, 74%) !important;
-  max-width: min(380px, 74%) !important;
-  min-width: 220px !important;
-  height: auto !important;
-  max-height: none !important;
-  margin: 12px auto 16px !important;
-  padding: 5px !important;
-  border-radius: 14px !important;
-  background: color-mix(in srgb, var(--surface2) 96%, transparent) !important;
-  border: 1px solid var(--border) !important;
-  overflow: visible !important;
-  cursor: zoom-in !important;
-  z-index: 1 !important;
-}
-.ce-model-figure img,
-figure.ce-model-figure[data-ce-model-image="1"] img,
-.quiz-dynamic-panel .ce-model-figure img,
-.study-card .ce-model-figure img {
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  width: 100% !important;
-  max-width: 100% !important;
-  height: auto !important;
-  max-height: none !important;
-  object-fit: contain !important;
-  border-radius: 9px !important;
-}
-.ce-model-figure figcaption { display: none !important; }
-@media (max-width: 720px) {
-  .ce-model-figure,
-  figure.ce-model-figure[data-ce-model-image="1"],
-  .quiz-dynamic-panel .ce-model-figure,
-  .study-card .ce-model-figure,
-  .qrow .ce-model-figure,
-  .false-answer-card .ce-model-figure {
-    width: min(390px, 94vw) !important;
-    max-width: min(390px, 94vw) !important;
-    min-width: 0 !important;
-    margin: 12px auto 16px !important;
-  }
-  .quiz-dynamic-panel {
-    overflow: visible !important;
-    height: auto !important;
-    max-height: none !important;
-  }
-}
-/* Canvas celebration: reliable on mobile browsers */
-.imc-canvas-celebration {
-  position: fixed !important;
-  inset: 0 !important;
-  width: 100vw !important;
-  height: 100vh !important;
-  height: 100dvh !important;
-  z-index: 2147483647 !important;
-  overflow: hidden !important;
-  pointer-events: all !important;
-  background: rgba(2, 6, 23, 0.12) !important;
-  backdrop-filter: blur(1.5px) !important;
-  -webkit-backdrop-filter: blur(1.5px) !important;
-}
-.imc-canvas-celebration canvas {
-  position: absolute !important;
-  inset: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  display: block !important;
-}
-.imc-canvas-celebration .imc-celebration-title {
-  position: absolute !important;
-  left: 50% !important;
-  top: 50% !important;
-  transform: translate(-50%, -50%) !important;
-  z-index: 2 !important;
-  animation: none !important;
-}
-
-</style>
